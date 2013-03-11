@@ -1,18 +1,18 @@
-var express = require('express');
-var mongo = require('mongodb');
+var express = require('express');//inclide express
+var mongo = require('mongodb');//then mongo fw
 
-var app = express();
+var app = express();//new expess
 
-app.configure(function(){});
+app.configure(function(){});//make express config
 
 
-var Server = mongo.Server,
-    Db = mongo.Db;
+var Server = mongo.Server,//mongodb server
+    Db = mongo.Db;//and db
 
-var server = new Server('localhost', 27017, {auto_reconnect: true});
-    db = new Db('utlogdb', server);
+var server = new Server('localhost', 27017, {auto_reconnect: true});//create server conn
+db = new Db('utlogdb', server);//to database
 
-db.open(function(err,db){
+db.open(function(err,db){//test connection
     if(!err){
         console.log("Connected to '" + db.databaseName + "' database");
         db.collection('utlog', {safe:true}, function(err, collection) {
@@ -23,7 +23,7 @@ db.open(function(err,db){
         });
     }
 });
-
+//router for req /
 app.get('/', function(req, res){
     db.collection('utlog', function(err, collection) {
         collection.find().toArray(function(err, items) {
@@ -32,6 +32,7 @@ app.get('/', function(req, res){
     });
 });
 
+//router for req /id/:id ,request should look like http://localhost:3000/id/513e496a6effb2b75d000001
 app.get('/id/:id', function(req, res){
     db.collection('utlog', function(err, collection) {
         collection.find().toArray(function(err, items) {
@@ -44,6 +45,7 @@ app.get('/id/:id', function(req, res){
         });
     });
 });
+//router will look for a date for req /date/:date ,request should look like http://localhost:3000/date/2013-03-11T21:15:22.902Z
 app.get('/date/:date', function(req, res){
     db.collection('utlog', function(err, collection) {
         collection.find().toArray(function(err, items) {
@@ -56,7 +58,7 @@ app.get('/date/:date', function(req, res){
         });
     });
 });
-
+//will add random log when http://localhost:3000/add is opened
 app.get('/add', function(req, res){
     res.send('Record Added.');
     db.collection('utlog', function(err, collection) {
@@ -71,5 +73,5 @@ app.get('/add', function(req, res){
     
 });
 
-app.listen(3000);
+app.listen(3000);//start the server on port 3000
 console.log('listen on port: 3000');
