@@ -1,3 +1,8 @@
+/*
+    first run npm install
+    then when into dir type node server.js
+*/
+
 var express = require('express');//inclide express
 var mongo = require('mongodb');//then mongo fw
 
